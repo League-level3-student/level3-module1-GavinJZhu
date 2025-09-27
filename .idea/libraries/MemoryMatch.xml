@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MemoryMatch">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/_04_Memory_Match/MemoryMatch.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

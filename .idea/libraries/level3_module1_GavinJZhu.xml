@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="level3-module1-GavinJZhu">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/gson-2.8.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/javax.json-1.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/TokenHacker.jar!/" />
+      <root url="jar://$PROJECT_DIR$/core.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
