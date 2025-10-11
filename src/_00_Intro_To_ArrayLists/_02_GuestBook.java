@@ -29,23 +29,24 @@ public class _02_GuestBook implements ActionListener {
 
     public static void main(String[] args) {
 
-        names.add(formatNames("Bob Banders", 1));
-        names.add(formatNames("Sandy Summers",2));
-        names.add("Greg Ganders");
-        names.add("Donny Donners");
-
         viewNames.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, names.toArray());
-
+                if (names.isEmpty()){
+                    JOptionPane.showMessageDialog(null,"No names currently in the guestbook.");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, names.toArray());
+                }
             }
         });
         addName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = JOptionPane.showInputDialog(null, "Input a name into the guestbook here.");
-                names.add(name);
+                if(name != null) {
+                    names.add(formatNames(name, names.size() + 1));
+                }
             }
         });
         frame.setSize(100, 100);
