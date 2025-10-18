@@ -14,12 +14,14 @@ class ArrayListRemoveTest {
     void testRemove1() {
         ArrayListRemove yard = new ArrayListRemove();
         ArrayList<Stuff> stuffIFoundInTheYard = new ArrayList<Stuff>();
+        stuffIFoundInTheYard.add(yard.new Dirt());
+        //manually added
         stuffIFoundInTheYard.add(yard.new Worm());
         stuffIFoundInTheYard.add(yard.new Dirt());
         stuffIFoundInTheYard.add(yard.new Dirt());
         stuffIFoundInTheYard.add(yard.new Dirt());
         stuffIFoundInTheYard.add(yard.new Worm());
-        stuffIFoundInTheYard.add(yard.new Dirt());
+        //stuffIFoundInTheYard.add(yard.new Dirt());
         
         // There should only be 2 worms left in the yard
         assertEquals(2, ArrayListRemove.cleanOutTheYard(stuffIFoundInTheYard).size());
