@@ -15,7 +15,18 @@ public class LongChipCompetition {
 
     public static void main(String[] args) {
         LongChipCompetition lcc = new LongChipCompetition();
-
+        String beatleName = "Hopefully you don't see this in the console!!";
+        double largestChip = 0;
+        lcc.initializeBeatles();
+        for (int i = 0; i < lcc.theBeatles.size(); i++) {
+            for (Chip chip : lcc.theBeatles.get(i).getChips()){
+                if (chip.getLength() > largestChip){
+                    largestChip = chip.getLength();
+                    beatleName = lcc.theBeatles.get(i).getName();
+                }
+            }
+        }
+        System.out.println(beatleName+ " has the largest chip, at a whopping size of "+largestChip+"!");
     }
 
     private void initializeBeatles() {
@@ -45,9 +56,16 @@ class Beatle {
 
     private void initializePlateOfChips() {
         int numberOfChips = new Random().nextInt(100);
+        double largestChip = 0;
         for (int i = 0; i < numberOfChips; i++) {
-            chips.add(new Chip(new Random().nextDouble() * 10));
+            double randomChip = new Random().nextDouble() * 10;
+            Chip newChip = new Chip(randomChip);
+            chips.add(newChip);
+            if (newChip.getLength() > largestChip){
+                largestChip = newChip.getLength();
+            }
         }
+        System.out.println("Largest Chip's Size: "+largestChip);
     }
 
     public ArrayList<Chip> getChips() {

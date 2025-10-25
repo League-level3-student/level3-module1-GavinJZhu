@@ -28,7 +28,6 @@ public class ArrayListRemove {
         for (int i = 0; i<yard.size(); i++){
             if(yard.get(i).type == "worm"){
             worms.add(yard.get(i));
-            System.out.println("removed index: "+i);
             }
         }
         return worms;
@@ -40,7 +39,6 @@ public class ArrayListRemove {
         for (int i = 0; i<list.size(); i++){
             if(list.get(i).charValue() == '#'){
                 list.remove(i);
-                System.out.println("removed index:"+i);
             }
         }
         return list;

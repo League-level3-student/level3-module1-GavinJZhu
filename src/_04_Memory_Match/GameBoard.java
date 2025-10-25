@@ -42,12 +42,12 @@ public class GameBoard extends JFrame implements ActionListener {
         }
         
         // 2. Initialize the ArrayList of Cards declared above
-        
+        cards = new ArrayList<>();
         
         // 3. Create TOTAL_CARDS number of objects each with a value of 1.
         //    Also, add action listeners to each Card object and then add each
         //    of the Card objects to the ArrayList of Cards.
-        
+        TOTAL_CARDS
         
         // 4. Use Collections.shuffle() method to randomize the order of
         //    the cards in the ArrayList
