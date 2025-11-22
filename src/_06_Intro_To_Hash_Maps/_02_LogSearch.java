@@ -56,11 +56,13 @@ public class _02_LogSearch implements ActionListener {
         panel.add(remove);
         remove.setText("Remove Entry");
         frame.add(panel);
+        frame.setSize(250, 100);
+        frame.setTitle("ID Database");
         frame.setVisible(true);
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String idNumber = JOptionPane.showInputDialog("Please enter your id number. (only use numbers from the hindu-arabic numeral system)", null);
+                String idNumber = JOptionPane.showInputDialog("Please enter your id number.", null);
                 String name = JOptionPane.showInputDialog("Please enter your name.", null);
                 ids.put(Integer.valueOf(idNumber),name);
                 JOptionPane.showMessageDialog(null, "Thanks! You can close this window now.");
@@ -70,19 +72,36 @@ public class _02_LogSearch implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = JOptionPane.showInputDialog("Enter ID", null);
-
+                String personAt = ids.get(Integer.valueOf(id));
+                if (personAt == null){
+                    JOptionPane.showMessageDialog(null, "ID doesn't exist.");
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "The person with id#"+id+" is "+personAt);
+                }
             }
         });
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String message = "ID List: ";
+                for(Integer i : ids.keySet()){
+                    message = message + "\nID: "+i+ "   Name: "+ids.get(i);
+                }
+                JOptionPane.showMessageDialog(null, message);
             }
         });
         remove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String id = JOptionPane.showInputDialog("Enter the ID you would like to remove", null);
+                String idNum = ids.remove(Integer.valueOf(id));
+                if (idNum == null){
+                    JOptionPane.showMessageDialog(null, "ID doesn't exist.");
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "ID sucessfully removed.");
+                }
             }
         });
     }

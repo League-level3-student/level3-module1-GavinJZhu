@@ -68,7 +68,12 @@ public class RetroSun extends PApplet {
         int sunBottomY = sunColors[sunColors.length-1];
 //        int sunTopY = 0; //return index 0
 //        int sunBottomY = sunColors.length-1;
+
         for (int i = 0; i < pixels.length; i++) {
+            System.out.println( "Topy: " + sunTopY);
+            System.out.println( "Boty: " + sunBottomY);
+            System.out.println( "Pixel Length: " + pixels.length);
+
             if (pixels[i] == sunColors[0]){
                 // If pixel[i] is the same color as the color of our circle (sunColors[0]),
                 // we need to map the pixel to a color in our sunColors[] array
@@ -80,15 +85,18 @@ public class RetroSun extends PApplet {
                 // In order to get the right color, the y value from the top of
                 // the sun to the bottom has to be mapped to a range from 0 to 1.
                 // Use the map() function to do that:
+
                 int y = i / width;
+                System.out.println("y:" + y + " i: " +  i + " width: " + width );
                 float step = map(y, sunTopY, sunBottomY, 0, 1);
-                System.out.println(y+" "+step);
+                //float step = map(y, 0, 1, sunTopY, sunBottomY);
+                System.out.println("Step:"+step);
                 // Call interpolateColor(sunColors, step) and save the color
                 // variable that's returned
                 int interpolatedColor = interpolateColor(sunColors, step);
                 // Set pixels[i] to the returned color
                 pixels[i] = interpolatedColor;
-                System.out.println(interpolatedColor);
+                System.out.println("inter:" + interpolatedColor);
             }
         }
 
