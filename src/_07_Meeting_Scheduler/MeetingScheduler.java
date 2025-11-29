@@ -1,7 +1,9 @@
 package _07_Meeting_Scheduler;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MeetingScheduler {
     /*
@@ -25,21 +27,37 @@ public class MeetingScheduler {
      * Assume both schedules are in the same time zones
      */
     public static Schedule getMutualAvailability(Schedule person1, Schedule person2) {
-        HashMap<String, ArrayList<Integer>> personOneTimes = new HashMap<>();
         Schedule mutualAvailability = new Schedule();
-        for (String i : person1.getSchedule().keySet()){
-            personOneTimes.put(i, person1.getSchedule().get(i));
-        }
-
-        for(String j : personOneTimes.keySet()) {
-            for (String k : person2.getSchedule().keySet()) {
-                if (k == j) {
-
+//      another way to complete the task
+//        for(String oneDay :  person1.getSchedule().keySet()) {
+//            for (String twoDay : person2.getSchedule().keySet()) {
+//                if (Objects.equals(twoDay, oneDay)) {
+//                    ArrayList<Integer> availableHours = getAvailableTimes(twoDay, person1, person2);
+//                    for (Integer hour : availableHours){
+//                        mutualAvailability.addAvailability(twoDay, hour);
+//                    }
+//                }
+//            }
+//        }
+        for(String oneDay :  person1.getSchedule().keySet()) {
+            if (person2.getSchedule().containsKey(oneDay)) {
+                ArrayList<Integer> availableHours = getAvailableTimes(oneDay, person1, person2);
+                for (Integer hour : availableHours) {
+                    mutualAvailability.addAvailability(oneDay, hour);
                 }
             }
         }
-
-
         return mutualAvailability;
+    }
+    public static ArrayList<Integer>  getAvailableTimes(String day, Schedule person1, Schedule person2){
+        ArrayList<Integer> mutualHours = new ArrayList<>();
+        ArrayList<Integer> person1Hours = person1.getSchedule().get(day);
+        ArrayList<Integer> person2Hours = person2.getSchedule().get(day);
+        for (Integer person1Hour :  person1Hours) {
+            if (person2Hours.contains(person1Hour)){
+                mutualHours.add(person1Hour);
+            }
+        }
+        return mutualHours;
     }
 }

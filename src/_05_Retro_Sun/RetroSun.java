@@ -64,10 +64,10 @@ public class RetroSun extends PApplet {
         loadPixels();
         // We want to change the color of our sun so use an if statement
         // to check if the pixel is the color of the yellow circle.
-        int sunTopY = sunColors[0]; //returns the value in the array at index 0
-        int sunBottomY = sunColors[sunColors.length-1];
-//        int sunTopY = 0; //return index 0
-//        int sunBottomY = sunColors.length-1;
+        //int sunTopY = sunColors[0]; //returns the value in the array at index 0
+        //int sunBottomY = sunColors[sunColors.length-1];
+        int sunTopY = 0; //return index 0
+        int sunBottomY = sunColors.length-1;
 
         for (int i = 0; i < pixels.length; i++) {
             System.out.println( "Topy: " + sunTopY);
@@ -86,9 +86,10 @@ public class RetroSun extends PApplet {
                 // the sun to the bottom has to be mapped to a range from 0 to 1.
                 // Use the map() function to do that:
 
-                int y = i / width;
-                System.out.println("y:" + y + " i: " +  i + " width: " + width );
-                float step = map(y, sunTopY, sunBottomY, 0, 1);
+                //int y = i / width;
+                int y = i / pixels.length;
+                //System.out.println("y:" + y + " i: " +  i + " width: " + width );
+                float step = map(y, 0, pixels.length, 0, 1);
                 //float step = map(y, 0, 1, sunTopY, sunBottomY);
                 System.out.println("Step:"+step);
                 // Call interpolateColor(sunColors, step) and save the color
