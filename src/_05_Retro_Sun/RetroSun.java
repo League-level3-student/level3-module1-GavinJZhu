@@ -15,6 +15,7 @@ public class RetroSun extends PApplet {
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
 
+
     // RGB colors
     int[] sunColors = {
             color(212, 202, 11), color(214, 198, 30), color(211, 170, 26),
@@ -27,13 +28,13 @@ public class RetroSun extends PApplet {
     @Override
     public void settings() {
         // 1. Set the size of your sketch to at least 800 width, 600 height
-
+        size(WIDTH, HEIGHT);
     }
 
     @Override
     public void setup() {
         // 2. Set bgColor as the background color
-
+        background(bgColor);
     }
 
     @Override
@@ -47,7 +48,10 @@ public class RetroSun extends PApplet {
         // Use noStroke() to remove the black outline
         fill(sunColors[0]);
         noStroke();
-        ellipse(50, 50, 50, 50);
+        int sunTopY = 300;
+        int sunHeight = 200;
+        int sunBottomY = sunTopY+sunHeight;
+        ellipse(400, sunTopY, 200, sunHeight);
         // Do you see a yellow sun like in the 1st image?
         // If not, fix your code before proceeding.
 
@@ -64,15 +68,8 @@ public class RetroSun extends PApplet {
         loadPixels();
         // We want to change the color of our sun so use an if statement
         // to check if the pixel is the color of the yellow circle.
-        //int sunTopY = sunColors[0]; //returns the value in the array at index 0
-        //int sunBottomY = sunColors[sunColors.length-1];
-        int sunTopY = 0; //return index 0
-        int sunBottomY = sunColors.length-1;
-
+        //System.out.println(pixels.length);
         for (int i = 0; i < pixels.length; i++) {
-            System.out.println( "Topy: " + sunTopY);
-            System.out.println( "Boty: " + sunBottomY);
-            System.out.println( "Pixel Length: " + pixels.length);
 
             if (pixels[i] == sunColors[0]){
                 // If pixel[i] is the same color as the color of our circle (sunColors[0]),
@@ -86,18 +83,15 @@ public class RetroSun extends PApplet {
                 // the sun to the bottom has to be mapped to a range from 0 to 1.
                 // Use the map() function to do that:
 
-                //int y = i / width;
-                int y = i / pixels.length;
-                //System.out.println("y:" + y + " i: " +  i + " width: " + width );
-                float step = map(y, 0, pixels.length, 0, 1);
-                //float step = map(y, 0, 1, sunTopY, sunBottomY);
+                int y = i/width;
+                float step = map(y, sunTopY, sunBottomY, 0, 1);
+                System.out.println(y);
                 System.out.println("Step:"+step);
                 // Call interpolateColor(sunColors, step) and save the color
                 // variable that's returned
                 int interpolatedColor = interpolateColor(sunColors, step);
                 // Set pixels[i] to the returned color
                 pixels[i] = interpolatedColor;
-                System.out.println("inter:" + interpolatedColor);
             }
         }
 
