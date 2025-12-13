@@ -14,7 +14,8 @@ import java.util.Arrays;
 public class RetroSun extends PApplet {
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-
+    static float rectY;
+    static float rectH;
 
     // RGB colors
     int[] sunColors = {
@@ -35,6 +36,8 @@ public class RetroSun extends PApplet {
     public void setup() {
         // 2. Set bgColor as the background color
         background(bgColor);
+        rectY = WIDTH/2;
+        rectH = 40;
     }
 
     @Override
@@ -49,9 +52,11 @@ public class RetroSun extends PApplet {
         fill(sunColors[0]);
         noStroke();
         int sunTopY = 300;
-        int sunHeight = 200;
+        int sunHeight = 400;
+        int sunCenterX = 400;
+        int sunRadius = 400;
         int sunBottomY = sunTopY+sunHeight;
-        ellipse(400, sunTopY, 200, sunHeight);
+        ellipse(sunCenterX, sunTopY, sunHeight, sunHeight);
         // Do you see a yellow sun like in the 1st image?
         // If not, fix your code before proceeding.
 
@@ -85,8 +90,8 @@ public class RetroSun extends PApplet {
 
                 int y = i/width;
                 float step = map(y, sunTopY, sunBottomY, 0, 1);
-                System.out.println(y);
-                System.out.println("Step:"+step);
+//                System.out.println(y);
+//                System.out.println("Step:"+step);
                 // Call interpolateColor(sunColors, step) and save the color
                 // variable that's returned
                 int interpolatedColor = interpolateColor(sunColors, step);
@@ -108,17 +113,22 @@ public class RetroSun extends PApplet {
          */
 
         // Set the fill color to the background color
+        fill(bgColor);
 
         // To draw each rectangle we need to find its x, y, width, height
         // *The y position can be any value within the sun:
-        //  float y = width / 2;
+        float y = rectY;
         // *The height can be any value you choose:
-        //  float h = 40;
+        float h = rectH;
         // *The x position can be the center of the sun's x position minus the radius:
-        //  float x = sunCenterX - sunRadius
+        float x = sunCenterX - sunRadius;
         // *The width can be 2 times the radius
-        //  float w = 2 * sunRadius
-        
+        float w = 2 * sunRadius;
+        Rectangle rec = new Rectangle(x, y, w, h);
+
+        rect(rec.x, rec.y, rec.w, rec.h);
+        System.out.println("updated");
+
         // Do you see a section missing from the sun like in the 3rd image?
 
         
@@ -134,21 +144,23 @@ public class RetroSun extends PApplet {
         // draw function AND initialize it in the setup() function.
 
         // Do you see the rectangle moving upwards?
-
+        rectY -= 1;
         // Pick a y positon to be the location when the sections stop moving up.
         // If the rectangle's y positon is above this, move the rectangle's
         // y position back to the bottom of the sun.
-
+        if (rectY<175){
+            rectY = WIDTH/2;
+        }
         // Does the rectangle move back to the bottom?
 
-        // Decrease the the height of the rectangle as it moves upwards.
+        // Decrease the height of the rectangle as it moves upwards.
         // Similar to the y positon, a float variable for the height needs to be
         // created if it doesn't already exist.
 
         // Adjust the amount to decrease so that it disappears close to the top.
         // HINT: You can use the map() function again,
-        // h = map(y, missingSectionTopY, missingSectionBottomY, 1, 40);
-
+        rectH = map(y, 175, WIDTH/2, 1, 40);
+        System.out.println(rectH);
         // The map() function will make the value of h = 1 if y is at the top,
         // and h = 40 if y is at the bottom.
 
