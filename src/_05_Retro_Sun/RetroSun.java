@@ -3,6 +3,7 @@ package _05_Retro_Sun;
 import processing.core.PApplet;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /*
@@ -37,7 +38,7 @@ public class RetroSun extends PApplet {
         // 2. Set bgColor as the background color
         background(bgColor);
         rectY = WIDTH/2;
-        rectH = 40;
+        rectH = 20;
     }
 
     @Override
@@ -60,7 +61,7 @@ public class RetroSun extends PApplet {
         // Do you see a yellow sun like in the 1st image?
         // If not, fix your code before proceeding.
 
-        
+
         /*
          * PART 2: Drawing a color gradient on the sun
          *
@@ -116,6 +117,8 @@ public class RetroSun extends PApplet {
         fill(bgColor);
 
         // To draw each rectangle we need to find its x, y, width, height
+
+
         // *The y position can be any value within the sun:
         float y = rectY;
         // *The height can be any value you choose:
@@ -124,47 +127,54 @@ public class RetroSun extends PApplet {
         float x = sunCenterX - sunRadius;
         // *The width can be 2 times the radius
         float w = 2 * sunRadius;
-        Rectangle rec = new Rectangle(x, y, w, h);
-
-        rect(rec.x, rec.y, rec.w, rec.h);
-        System.out.println("updated");
-
-        // Do you see a section missing from the sun like in the 3rd image?
-
-        
-        /*
-         * PART 4: Moving the missing sun sections
-         *
-         * To move a section upwards each rectangle's y value needs to decrease. To make
-         * the section get smaller, its height needs to also decrease.
-         */
-
-        // Decrease the y variable of the rectangular section created in PART 3.
-        // If there isn't a variable, declare a float variable OUTSIDE of the
-        // draw function AND initialize it in the setup() function.
-
-        // Do you see the rectangle moving upwards?
-        rectY -= 1;
-        // Pick a y positon to be the location when the sections stop moving up.
-        // If the rectangle's y positon is above this, move the rectangle's
-        // y position back to the bottom of the sun.
-        if (rectY<175){
-            rectY = WIDTH/2;
+        //Rectangle rec = new Rectangle(x, y, w, h);
+        ArrayList<Rectangle> rectangles = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Rectangle rect = new Rectangle(x, y+50*i, w, h+13*i);
+            rectangles.add(rect);
         }
-        // Does the rectangle move back to the bottom?
+        for (Rectangle rec : rectangles) {
 
-        // Decrease the height of the rectangle as it moves upwards.
-        // Similar to the y positon, a float variable for the height needs to be
-        // created if it doesn't already exist.
+            rect(rec.x, rec.y, rec.w, rec.h);
+            System.out.println("updated");
 
-        // Adjust the amount to decrease so that it disappears close to the top.
-        // HINT: You can use the map() function again,
-        rectH = map(y, 175, WIDTH/2, 1, 40);
-        System.out.println(rectH);
+            // Do you see a section missing from the sun like in the 3rd image?
+
+
+            /*
+             * PART 4: Moving the missing sun sections
+             *
+             * To move a section upwards each rectangle's y value needs to decrease. To make
+             * the section get smaller, its height needs to also decrease.
+             */
+
+            // Decrease the y variable of the rectangular section created in PART 3.
+            // If there isn't a variable, declare a float variable OUTSIDE of the
+            // draw function AND initialize it in the setup() function.
+
+            // Do you see the rectangle moving upwards?
+            rectY -= 0.1;
+            // Pick a y positon to be the location when the sections stop moving up.
+            // If the rectangle's y positon is above this, move the rectangle's
+            // y position back to the bottom of the sun.
+            if (rec.y < 300) {
+                rec.y = WIDTH / 2;
+            }
+            // Does the rectangle move back to the bottom?
+
+            // Decrease the height of the rectangle as it moves upwards.
+            // Similar to the y positon, a float variable for the height needs to be
+            // created if it doesn't already exist.
+
+            // Adjust the amount to decrease so that it disappears close to the top.
+            // HINT: You can use the map() function again,
+            rectH = map(y, 300, WIDTH / 2, 1, 40);
+        }
+        //System.out.println(rectH);
         // The map() function will make the value of h = 1 if y is at the top,
         // and h = 40 if y is at the bottom.
 
-        
+
         /*
          * PART 5: Managing the missing sun sections
          *
@@ -176,7 +186,7 @@ public class RetroSun extends PApplet {
         // HINT: You can use the Rectangle class defined below to create
         // a list of Rectangles.
 
-        
+
         /*
          * PART 6: Adding extras
          *
@@ -184,7 +194,153 @@ public class RetroSun extends PApplet {
          * reflections and stars. See RetroSun.html in this folder for some
          * example classes
          */
+
     }
+    //   @Override
+//    public void draw() {
+//        /*
+//         * PART 1: Drawing the sun
+//         */
+//
+//        // Draw an ellipse for the sun in the center of the window
+//        // Use fill(sunColors[0]) to make it yellow
+//        // Use noStroke() to remove the black outline
+//        fill(sunColors[0]);
+//        noStroke();
+//        int sunTopY = 300;
+//        int sunHeight = 400;
+//        int sunCenterX = 400;
+//        int sunRadius = 400;
+//        int sunBottomY = sunTopY+sunHeight;
+//        ellipse(sunCenterX, sunTopY, sunHeight, sunHeight);
+//        // Do you see a yellow sun like in the 1st image?
+//        // If not, fix your code before proceeding.
+//
+//
+//        /*
+//         * PART 2: Drawing a color gradient on the sun
+//         *
+//         * This will make the sun have gradually different colors from the top to bottom
+//         */
+//
+//        // Call the loadPixels() method to put all the pixel colors into
+//        // the pixels[] array
+//        // https://processing.org/reference/loadPixels_.html
+//        loadPixels();
+//        // We want to change the color of our sun so use an if statement
+//        // to check if the pixel is the color of the yellow circle.
+//        //System.out.println(pixels.length);
+//        for (int i = 0; i < pixels.length; i++) {
+//
+//            if (pixels[i] == sunColors[0]){
+//                // If pixel[i] is the same color as the color of our circle (sunColors[0]),
+//                // we need to map the pixel to a color in our sunColors[] array
+//                // (see 2nd gradient image in RetroSun.html)
+//
+//                // The top of the sun is yellow (sunColors[0]) and the bottom
+//                // of the sun is red (sunColors[sunColors.length - 1]
+//
+//                // In order to get the right color, the y value from the top of
+//                // the sun to the bottom has to be mapped to a range from 0 to 1.
+//                // Use the map() function to do that:
+//
+//                int y = i/width;
+//                float step = map(y, sunTopY, sunBottomY, 0, 1);
+////                System.out.println(y);
+////                System.out.println("Step:"+step);
+//                // Call interpolateColor(sunColors, step) and save the color
+//                // variable that's returned
+//                int interpolatedColor = interpolateColor(sunColors, step);
+//                // Set pixels[i] to the returned color
+//                pixels[i] = interpolatedColor;
+//            }
+//        }
+//
+//        // Call updatePixels() after you loop through all the pixels to
+//        // update the pixel colors
+//        // https://processing.org/reference/updatePixels_.html
+//        updatePixels();
+//
+//        /*
+//         * PART 3: Drawing the missing sections at the bottom of the sun
+//         *
+//         * The missing parts of the sun are created by drawing rectangles over the sun
+//         * with the same color as the background.
+//         */
+//
+//        // Set the fill color to the background color
+//        fill(bgColor);
+//
+//        // To draw each rectangle we need to find its x, y, width, height
+//        // *The y position can be any value within the sun:
+//        float y = rectY;
+//        // *The height can be any value you choose:
+//        float h = rectH;
+//        // *The x position can be the center of the sun's x position minus the radius:
+//        float x = sunCenterX - sunRadius;
+//        // *The width can be 2 times the radius
+//        float w = 2 * sunRadius;
+//        Rectangle rec = new Rectangle(x, y, w, h);
+//
+//        rect(rec.x, rec.y, rec.w, rec.h);
+//        System.out.println("updated");
+//
+//        // Do you see a section missing from the sun like in the 3rd image?
+//
+//
+//        /*
+//         * PART 4: Moving the missing sun sections
+//         *
+//         * To move a section upwards each rectangle's y value needs to decrease. To make
+//         * the section get smaller, its height needs to also decrease.
+//         */
+//
+//        // Decrease the y variable of the rectangular section created in PART 3.
+//        // If there isn't a variable, declare a float variable OUTSIDE of the
+//        // draw function AND initialize it in the setup() function.
+//
+//        // Do you see the rectangle moving upwards?
+//        rectY -= 1;
+//        // Pick a y positon to be the location when the sections stop moving up.
+//        // If the rectangle's y positon is above this, move the rectangle's
+//        // y position back to the bottom of the sun.
+//        if (rectY<175){
+//            rectY = WIDTH/2;
+//        }
+//        // Does the rectangle move back to the bottom?
+//
+//        // Decrease the height of the rectangle as it moves upwards.
+//        // Similar to the y positon, a float variable for the height needs to be
+//        // created if it doesn't already exist.
+//
+//        // Adjust the amount to decrease so that it disappears close to the top.
+//        // HINT: You can use the map() function again,
+//        rectH = map(y, 175, WIDTH/2, 1, 40);
+//        System.out.println(rectH);
+//        // The map() function will make the value of h = 1 if y is at the top,
+//        // and h = 40 if y is at the bottom.
+//
+//
+//        /*
+//         * PART 5: Managing the missing sun sections
+//         *
+//         * Using a list to manage moving multiple missing sun sections
+//         */
+//
+//        // Figure out how to create the other missing sun sections using the
+//        // code you wrote for the 1 missing sun section.
+//        // HINT: You can use the Rectangle class defined below to create
+//        // a list of Rectangles.
+//
+//
+//        /*
+//         * PART 6: Adding extras
+//         *
+//         * If you want to make your retro sun look more unique, try adding
+//         * reflections and stars. See RetroSun.html in this folder for some
+//         * example classes
+//         */
+//    }
 
     static public void main(String[] passedArgs) {
         PApplet.main(RetroSun.class.getName());
