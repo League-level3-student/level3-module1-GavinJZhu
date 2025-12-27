@@ -17,6 +17,8 @@ public class RetroSun extends PApplet {
     static final int HEIGHT = 600;
     static float rectY;
     static float rectH;
+    //ArrayList<Float> y = new ArrayList<>();
+
 
     // RGB colors
     int[] sunColors = {
@@ -55,7 +57,7 @@ public class RetroSun extends PApplet {
         int sunTopY = 300;
         int sunHeight = 400;
         int sunCenterX = 400;
-        int sunRadius = 400;
+        int sunRadius = 200;
         int sunBottomY = sunTopY+sunHeight;
         ellipse(sunCenterX, sunTopY, sunHeight, sunHeight);
         // Do you see a yellow sun like in the 1st image?
@@ -127,16 +129,17 @@ public class RetroSun extends PApplet {
         float x = sunCenterX - sunRadius;
         // *The width can be 2 times the radius
         float w = 2 * sunRadius;
-        //Rectangle rec = new Rectangle(x, y, w, h);
+
         ArrayList<Rectangle> rectangles = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
+
             Rectangle rect = new Rectangle(x, y+50*i, w, h+13*i);
             rectangles.add(rect);
+
         }
         for (Rectangle rec : rectangles) {
-
             rect(rec.x, rec.y, rec.w, rec.h);
-            System.out.println("updated");
+            System.out.println("making rectangle "+rec.y);
 
             // Do you see a section missing from the sun like in the 3rd image?
 
@@ -158,7 +161,11 @@ public class RetroSun extends PApplet {
             // If the rectangle's y positon is above this, move the rectangle's
             // y position back to the bottom of the sun.
             if (rec.y < 300) {
-                rec.y = WIDTH / 2;
+                //rectY = WIDTH / 2;
+                System.out.println("before "+rec.y);
+                rec.y = rec.y+50;
+                rectY = rec.y;
+                System.out.println("after "+rec.y);
             }
             // Does the rectangle move back to the bottom?
 
@@ -168,7 +175,7 @@ public class RetroSun extends PApplet {
 
             // Adjust the amount to decrease so that it disappears close to the top.
             // HINT: You can use the map() function again,
-            rectH = map(y, 300, WIDTH / 2, 1, 40);
+            rectH = map(y, 300, WIDTH/2, 1, 40);
         }
         //System.out.println(rectH);
         // The map() function will make the value of h = 1 if y is at the top,
