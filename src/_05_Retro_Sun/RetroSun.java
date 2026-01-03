@@ -2,9 +2,7 @@ package _05_Retro_Sun;
 
 import processing.core.PApplet;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /*
  * Goal: Create an animated retro sun image!
@@ -16,9 +14,7 @@ public class RetroSun extends PApplet {
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
     static float rectY;
-    static float rectH;
-    //ArrayList<Float> y = new ArrayList<>();
-
+    static float rectHeight;
 
     // RGB colors
     int[] sunColors = {
@@ -40,7 +36,7 @@ public class RetroSun extends PApplet {
         // 2. Set bgColor as the background color
         background(bgColor);
         rectY = WIDTH/2;
-        rectH = 20;
+        rectHeight = 20;
     }
 
     @Override
@@ -124,7 +120,7 @@ public class RetroSun extends PApplet {
         // *The y position can be any value within the sun:
         float y = rectY;
         // *The height can be any value you choose:
-        float h = rectH;
+        float h = rectHeight;
         // *The x position can be the center of the sun's x position minus the radius:
         float x = sunCenterX - sunRadius;
         // *The width can be 2 times the radius
@@ -160,13 +156,17 @@ public class RetroSun extends PApplet {
             // Pick a y positon to be the location when the sections stop moving up.
             // If the rectangle's y positon is above this, move the rectangle's
             // y position back to the bottom of the sun.
-            if (rec.y < 300) {
-                //rectY = WIDTH / 2;
-                System.out.println("before "+rec.y);
-                rec.y = rec.y+50;
-                rectY = rec.y;
-                System.out.println("after "+rec.y);
-            }
+
+            //iterate through each rectangle, check each y val, if y is less than threshhold
+            //reset to bottom
+            for ()
+                if (rec.y <= 300) {
+                    rectY = WIDTH / 2;
+                    System.out.println("before "+rec.y);
+
+                    rec.y = WIDTH /2;
+                    System.out.println("after "+rec.y);
+                }
             // Does the rectangle move back to the bottom?
 
             // Decrease the height of the rectangle as it moves upwards.
@@ -175,7 +175,10 @@ public class RetroSun extends PApplet {
 
             // Adjust the amount to decrease so that it disappears close to the top.
             // HINT: You can use the map() function again,
-            rectH = map(y, 300, WIDTH/2, 1, 40);
+            //h = map(y, missingSectionTopY, missingSectionBottomY, 1, 40);
+            //rectHeight = map(y, sunTopY,sunBottomY+sunHeight/2 , 1, 40);
+            rectHeight = map(y, 300, WIDTH/2, 1, 40);
+
         }
         //System.out.println(rectH);
         // The map() function will make the value of h = 1 if y is at the top,
