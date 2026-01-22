@@ -3,7 +3,9 @@ package _08_California_Weather;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLOutput;
 import java.util.HashMap;
+import java.util.Objects;
 
 /*
  * OBJECTIVE:
@@ -43,7 +45,7 @@ public class CaliforniaWeather {
         String cityName = Utilities.capitalizeWords( "National City" );
         WeatherData datum = weatherData.get(cityName);
 
-        frame.setSize(100, 100);
+        frame.setSize(200, 150);
         citySearch.setText("City Search");
         weatherSearch.setText("Weather Search");
         tempRangeSearch.setText("Temperature Range Search");
@@ -69,14 +71,61 @@ public class CaliforniaWeather {
         weatherSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String city = JOptionPane.showInputDialog("Input the city you'd like to search.");
+                String weather = JOptionPane.showInputDialog("Input the weather type you'd like to search.");
+                String weatherCapitalized = Utilities.capitalizeWords(weather);
+                String response = "Cities with the specified weather type are: \n";
+                int citiesWithSpecifiedWeather = 0;
 
+                for (String city : weatherData.keySet()){
+                    if (Objects.equals(weatherData.get(city).weatherSummary, weatherCapitalized)){
+                        citiesWithSpecifiedWeather += 1;
+                        if (citiesWithSpecifiedWeather % 10 == 0){
+                            response += "\n"+city+", ";
+                        }
+                        else {
+                            response += city + ", ";
+                        }
+                    }
+                }
+
+                if (citiesWithSpecifiedWeather == 0){
+                    JOptionPane.showMessageDialog(null, "No city found with that weather or invalid weather type.");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, response);
+                }
             }
         });
         tempRangeSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String tempMin = JOptionPane.showInputDialog(null, "Lower bound:");
+                String tempMax = JOptionPane.showInputDialog(null, "Upper bound:");
+                String response = "Cities between "+tempMin+"F and "+tempMax+"F are: \n";
+                int citiesWithinTempRange = 0;
 
+                for (String city : weatherData.keySet()){
+                    Double cityTemp = weatherData.get(city).temperatureF;
+
+                    if (cityTemp>Double.parseDouble(tempMin) && cityTemp<Double.parseDouble(tempMax)){
+                        citiesWithinTempRange += 1;
+
+                        if (citiesWithinTempRange % 10 == 0){
+                            response += "\n "+city+", ";
+                        }
+
+                        else {
+                            response += city+", ";
+                        }
+                    }
+                }
+
+                if (citiesWithinTempRange == 0) {
+                    JOptionPane.showMessageDialog(null, "No city found within given temperature range.");
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, response);
+                }
             }
         });
 
