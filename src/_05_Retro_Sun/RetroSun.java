@@ -25,7 +25,6 @@ public class RetroSun extends PApplet {
 
     int bgColor = color(31, 0, 48);
     ArrayList<Rectangle> rectangles = new ArrayList<>();
-    //float y = rectY;
 
 
     @Override
@@ -38,23 +37,18 @@ public class RetroSun extends PApplet {
     public void setup() {
         // 2. Set bgColor as the background color
         background(bgColor);
-        rectY = 500;
-        rectHeight = 40;
         // *The y position can be any value within the sun:
-        float y = rectY;
+        rectY = 500;
         // *The height can be any value you choose:
-        float h = rectHeight;
+        rectHeight = 40;
         // *The x position can be the center of the sun's x position minus the radius:
         float x = 200;
         // *The width can be 2 times the radius
-        //float w = 2 * sunRadius;
-        float w = 2 * 200;
+        float w = 400;
 
         for (int i = 0; i < 5; i++) {
-
-            Rectangle rect = new Rectangle(x, y+50*i, w, h+13*i);
+            Rectangle rect = new Rectangle(x, rectY+50*i, w, rectHeight);
             rectangles.add(rect);
-
         }
     }
 
@@ -72,7 +66,6 @@ public class RetroSun extends PApplet {
         int sunTopY = 300;
         int sunHeight = 400;
         int sunCenterX = 400;
-        int sunRadius = 200;
         int sunBottomY = sunTopY+sunHeight;
         ellipse(sunCenterX, sunTopY, sunHeight, sunHeight);
         // Do you see a yellow sun like in the 1st image?
@@ -91,7 +84,6 @@ public class RetroSun extends PApplet {
         loadPixels();
         // We want to change the color of our sun so use an if statement
         // to check if the pixel is the color of the yellow circle.
-        //System.out.println(pixels.length);
         for (int i = 0; i < pixels.length; i++) {
 
             if (pixels[i] == sunColors[0]){
@@ -108,8 +100,6 @@ public class RetroSun extends PApplet {
 
                 int y = i/width;
                 float step = map(y, sunTopY, sunBottomY, 0, 1);
-//                System.out.println(y);
-//                System.out.println("Step:"+step);
                 // Call interpolateColor(sunColors, step) and save the color
                 // variable that's returned
                 int interpolatedColor = interpolateColor(sunColors, step);
@@ -134,31 +124,9 @@ public class RetroSun extends PApplet {
         fill(bgColor);
 
         // To draw each rectangle we need to find its x, y, width, height
-
-
-//        // *The y position can be any value within the sun:
-//        float y = rectY;
-//        // *The height can be any value you choose:
-//        float h = rectHeight;
-//        // *The x position can be the center of the sun's x position minus the radius:
-//        float x = sunCenterX - sunRadius;
-//        // *The width can be 2 times the radius
-//        float w = 2 * sunRadius;
-//
-//        ArrayList<Rectangle> rectangles = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//
-//            Rectangle rect = new Rectangle(x, y+50*i, w, h+13*i);
-//            rectangles.add(rect);
-//
-//        }
         for (Rectangle rec : rectangles) {
             rect(rec.x, rec.y, rec.w, rec.h);
-            System.out.println("making rectangle "+rec.y);
-
             // Do you see a section missing from the sun like in the 3rd image?
-
-
             /*
              * PART 4: Moving the missing sun sections
              *
@@ -181,29 +149,18 @@ public class RetroSun extends PApplet {
             for (Rectangle rect : rectangles) {
                 if (rect.y <= 250) {
                     rec.y = 500;
-
-//                    System.out.println("before " + rect.y);
-//                    rect.y = WIDTH / 2;
-//                    System.out.println("after " + rect.y);
                 }
             }
             // Does the rectangle move back to the bottom?
-
             // Decrease the height of the rectangle as it moves upwards.
             // Similar to the y positon, a float variable for the height needs to be
             // created if it doesn't already exist.
-
             // Adjust the amount to decrease so that it disappears close to the top.
             // HINT: You can use the map() function again,
-            //h = map(y, missingSectionTopY, missingSectionBottomY, 1, 40);
-            //rectHeight = map(y, sunTopY,sunBottomY+sunHeight/2 , 1, 40);
+            // The map() function will make the value of h = 1 if y is at the top
+            // and h = 40 if y is at the bottom.
             rec.h = map(rec.y, 250, 500, 1, 40);
-
         }
-        //System.out.println(rectH);
-        // The map() function will make the value of h = 1 if y is at the top,
-        // and h = 40 if y is at the bottom.
-
 
         /*
          * PART 5: Managing the missing sun sections
