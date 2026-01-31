@@ -2,14 +2,14 @@ package _09_World_Clocks;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.Timer;
+import javax.swing.*;
+//Auckland, Tokyo, Dhaka, Moscow, London, Rio de Janeiro, NYC, LA, Honolulu
 
 /*
  * You task is to create a java program that:
@@ -42,42 +42,65 @@ public class WorldClocks implements ActionListener {
     JFrame frame;
     JPanel panel;
     JTextArea textArea;
+    JTable listedTimes;
+    JScrollPane sp = new JScrollPane();
     
     String city;
     String dateStr;
     String timeStr;
+    HashMap<String, TimeZone> cities = new HashMap<>();
     
     public WorldClocks() {
         clockUtil = new ClockUtilities();
 
         // The format for the city must be: city, country (all caps)
-        city = "Chicago, US";
+        city = "New York, US";
         timeZone = clockUtil.getTimeZoneFromCityName(city);
-        
+
         Calendar calendar = Calendar.getInstance(timeZone);
         String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
         String dayOfWeek = calendar.getDisplayName( Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         dateStr = dayOfWeek + " " + month + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
-        
+
         System.out.println(dateStr);
 
         // Sample starter program
-        frame = new JFrame();
-        panel = new JPanel();
-        textArea = new JTextArea();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.setSize(100, 100);
-        frame.add(panel);
-        panel.add(textArea);
-        textArea.setText(city + "\n" + dateStr);
-        
+//        frame = new JFrame();
+//        panel = new JPanel();
+//        textArea = new JTextArea();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setVisible(true);
+//        frame.setSize(200, 200);
+//        frame.add(panel);
+//        panel.add(textArea);
+//        textArea.setText(city + "\n" + dateStr);
+        createUI();
         // This Timer object is set to call the actionPerformed() method every
         // 1000 milliseconds
         timer = new Timer(1000, this);
         timer.start();
     }
-
+    public void createUI(){
+        String[] columnTest = {"City","Time"};
+        String[][] data = {
+                {"Test, Test"},
+                {"Test2, Test2"}
+        };
+        frame = new JFrame();
+        //panel = new JPanel();
+        listedTimes = new JTable(data, columnTest);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setSize(200, 200);
+        //panel.add(listedTimes);
+        sp.add(listedTimes);
+        frame.add(sp);
+    }
+//    public void newCity(String city){
+//        TimeZone citiesTimeZone = clockUtil.getTimeZoneFromCityName(city);
+//
+//
+//    }
     @Override
     public void actionPerformed(ActionEvent arg0) {
         Calendar c = Calendar.getInstance(timeZone);
@@ -86,7 +109,7 @@ public class WorldClocks implements ActionListener {
         timeStr = militaryTime + twelveHourTime;
         
         System.out.println(timeStr);
-        textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
+        //textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
         frame.pack();
     }
 }
