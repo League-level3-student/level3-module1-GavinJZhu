@@ -1,5 +1,7 @@
 package _09_World_Clocks;
 
+import _08_California_Weather.Utilities;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
@@ -12,7 +14,7 @@ import javax.swing.*;
 //Auckland, Tokyo, Dhaka, Moscow, London, Rio de Janeiro, NYC, LA, Honolulu
 
 /*
- * You task is to create a java program that:
+ * Your task is to create a java program that:
  * 1. Displays the time for multiple cities around the world on one display.
  * 2. Gives the user the ability to add a city to the display. One possible
  *    way to do this is to create a HashMap of city names and their
@@ -42,9 +44,9 @@ public class WorldClocks implements ActionListener {
     JFrame frame;
     JPanel panel;
     JTextArea textArea;
-    JTable listedTimes;
-    JScrollPane sp = new JScrollPane();
-    
+    JButton chooseCity;
+
+
     String city;
     String dateStr;
     String timeStr;
@@ -54,62 +56,48 @@ public class WorldClocks implements ActionListener {
         clockUtil = new ClockUtilities();
 
         // The format for the city must be: city, country (all caps)
-        city = "New York, US";
-        timeZone = clockUtil.getTimeZoneFromCityName(city);
-
-        Calendar calendar = Calendar.getInstance(timeZone);
-        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-        String dayOfWeek = calendar.getDisplayName( Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
-        dateStr = dayOfWeek + " " + month + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR);
-
-        System.out.println(dateStr);
 
         // Sample starter program
-//        frame = new JFrame();
-//        panel = new JPanel();
-//        textArea = new JTextArea();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setVisible(true);
-//        frame.setSize(200, 200);
-//        frame.add(panel);
-//        panel.add(textArea);
-//        textArea.setText(city + "\n" + dateStr);
-        createUI();
+        frame = new JFrame();
+        panel = new JPanel();
+        textArea = new JTextArea();
+        chooseCity = new JButton();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setSize(200, 200);
+        frame.add(panel);
+        panel.add(textArea);
+        chooseCity.setText("Add city");
+        chooseCity.addActionListener(this);
+        panel.add(chooseCity);
+        frame.pack();
+        frame.setVisible(true);
         // This Timer object is set to call the actionPerformed() method every
         // 1000 milliseconds
         timer = new Timer(1000, this);
         timer.start();
     }
-    public void createUI(){
-        String[] columnTest = {"City","Time"};
-        String[][] data = {
-                {"Test, Test"},
-                {"Test2, Test2"}
-        };
-        frame = new JFrame();
-        //panel = new JPanel();
-        listedTimes = new JTable(data, columnTest);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.setSize(200, 200);
-        //panel.add(listedTimes);
-        sp.add(listedTimes);
-        frame.add(sp);
-    }
-//    public void newCity(String city){
-//        TimeZone citiesTimeZone = clockUtil.getTimeZoneFromCityName(city);
-//
-//
-//    }
+
     @Override
     public void actionPerformed(ActionEvent arg0) {
+        if (arg0.getSource() == chooseCity) {
+            city = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
+            city = Utilities.capitalizeWords(city);
+            timeZone = clockUtil.getTimeZoneFromCityName(city);
+            if (timeZone == null){
+                timeZone = clockUtil.getTimeZoneFromCityName("San Diego, US");
+            }
+            if (city == null){
+                city = "San Diego, US";
+            }
+        }
+
         Calendar c = Calendar.getInstance(timeZone);
         String militaryTime = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
         String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
         timeStr = militaryTime + twelveHourTime;
-        
+        textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
         System.out.println(timeStr);
-        //textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
         frame.pack();
     }
 }
