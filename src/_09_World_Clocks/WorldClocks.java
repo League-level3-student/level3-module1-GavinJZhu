@@ -51,6 +51,7 @@ public class WorldClocks implements ActionListener {
     String dateStr;
     String timeStr;
     HashMap<String, TimeZone> cities = new HashMap<>();
+    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     
     public WorldClocks() {
         clockUtil = new ClockUtilities();
@@ -78,25 +79,79 @@ public class WorldClocks implements ActionListener {
         timer.start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
+   // @Override
+    public void gavin_actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == chooseCity) {
             city = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
             city = Utilities.capitalizeWords(city);
             timeZone = clockUtil.getTimeZoneFromCityName(city);
-            if (timeZone == null){
-                timeZone = clockUtil.getTimeZoneFromCityName("San Diego, US");
-            }
-            if (city == null){
-                city = "San Diego, US";
-            }
         }
-
+        if (timeZone == null){
+            timeZone = clockUtil.getTimeZoneFromCityName("San Diego, US");
+        }
+        if (city == null){
+            city = "San Diego, US";
+        }
         Calendar c = Calendar.getInstance(timeZone);
         String militaryTime = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
         String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
         timeStr = militaryTime + twelveHourTime;
+        int monthIndex = c.get(Calendar.MONTH);
+        String date = monthNames[monthIndex]+" "+ c.get(Calendar.DATE) +", "+c.get(Calendar.YEAR);
+
+        dateStr = date;
         textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
+        System.out.println(timeStr);
+        frame.pack();
+    }
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+        if (arg0.getSource() == chooseCity) {
+            city = GetCityFromUser();
+            //System.out.println(city);
+            // TBD...Add city to my HashMap
+        }
+        if (city != null) {
+            // Get updated time string for city
+            // TBD...Iterate thru all my Hashmap for cities
+            String updatedTime = GetUpdatedTimeString(city);
+
+            // Display time string
+            DisplayTimeString(city, updatedTime);
+        }
+    }
+    public String GetCityFromUser()
+    {
+        String city2 = null;
+        city2 = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
+        if (city2 == null || city2.isEmpty() || city2.length() == 1)
+        {
+            city2 = "San Diego, US"; // default
+        }
+        city2 = Utilities.capitalizeWords(city2);
+        return city2;
+    }
+    public String GetUpdatedTimeString(String city)
+    {
+        String updatedTime = null;
+        System.out.println(city);
+        timeZone = clockUtil.getTimeZoneFromCityName(city);
+        if (timeZone != null) {
+            Calendar c = Calendar.getInstance(timeZone);
+            String militaryTime = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
+            String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
+            timeStr = militaryTime + twelveHourTime;
+
+            int monthIndex = c.get(Calendar.MONTH);
+            dateStr = monthNames[monthIndex] + " " + c.get(Calendar.DATE) + ", " + c.get(Calendar.YEAR);
+        }
+        updatedTime  = dateStr + "\n" + timeStr;
+        return updatedTime;
+    }
+
+    public void DisplayTimeString( String city2, String updatedTime)
+    {
+        textArea.setText(city2 + "\n" + updatedTime);
         System.out.println(timeStr);
         frame.pack();
     }

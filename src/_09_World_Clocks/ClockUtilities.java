@@ -49,8 +49,12 @@ public class ClockUtilities {
             JOptionPane.showMessageDialog(null, "ERROR: Unable to find " + requestedCity);
         } else {
             System.out.println("Getting time zone for " + requestedCity);
+            //System.out.println("Coordinates " + coordinates);
             String timeZoneString = getTimeZoneFromCoordinates(coordinates);
-            timeZoneObj = TimeZone.getTimeZone(timeZoneString);
+            System.out.println("timezone equals " + timeZoneString);
+            if (timeZoneString != null) {
+                timeZoneObj = TimeZone.getTimeZone(timeZoneString);
+            }
         }
 
         return timeZoneObj;
