@@ -2,15 +2,13 @@ package _09_World_Clocks;
 
 import _08_California_Weather.Utilities;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.TimeZone;
-
-import javax.swing.*;
 //Auckland, Tokyo, Dhaka, Moscow, London, Rio de Janeiro, NYC, LA, Honolulu
 
 /*
@@ -21,7 +19,7 @@ import javax.swing.*;
  *    corresponding time zones, e.g. HashMap<String, TimeZone>, then use each
  *    city's TimeZone to get the current date/time every second using a
  *    Timer object (see example code below).
- * 
+ *
  * The code below is an example of how to print out a clock for San Diego.
  * Use the ClockUtilities class to find the time zone of each city, then use
  * Calendar.getInstance to return a Calendar object to get the current time for
@@ -29,9 +27,9 @@ import javax.swing.*;
  *   TimeZone timeZone = clockUtil.getTimeZoneFromCityName("San Diego, US");
  *   Calendar c = Calendar.getInstance(timeZone);
  *   System.out.println("Full date and time: " + calendar.getTime());
- * 
+ *
  * NOTE: The program may take a second or two to execute
- * 
+ *
  * Calendar class:
  * https://docs.oracle.com/javase/7/docs/api/java/util/Calendar.html
  */
@@ -52,7 +50,7 @@ public class WorldClocks implements ActionListener {
     String timeStr;
     HashMap<String, TimeZone> cities = new HashMap<>();
     String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    
+
     public WorldClocks() {
         clockUtil = new ClockUtilities();
 
@@ -79,17 +77,17 @@ public class WorldClocks implements ActionListener {
         timer.start();
     }
 
-   // @Override
+    //@Override
     public void gavin_actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == chooseCity) {
             city = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
             city = Utilities.capitalizeWords(city);
             timeZone = clockUtil.getTimeZoneFromCityName(city);
         }
-        if (timeZone == null){
+        if (timeZone == null) {
             timeZone = clockUtil.getTimeZoneFromCityName("San Diego, US");
         }
-        if (city == null){
+        if (city == null) {
             city = "San Diego, US";
         }
         Calendar c = Calendar.getInstance(timeZone);
@@ -97,46 +95,54 @@ public class WorldClocks implements ActionListener {
         String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
         timeStr = militaryTime + twelveHourTime;
         int monthIndex = c.get(Calendar.MONTH);
-        String date = monthNames[monthIndex]+" "+ c.get(Calendar.DATE) +", "+c.get(Calendar.YEAR);
+        String date = monthNames[monthIndex] + " " + c.get(Calendar.DATE) + ", " + c.get(Calendar.YEAR);
 
         dateStr = date;
         textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
         System.out.println(timeStr);
         frame.pack();
     }
+
+
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == chooseCity) {
-            city = GetCityFromUser();
+            city = getCityFromUser();
             //System.out.println(city);
             // TBD...Add city to my HashMap
         }
         if (city != null) {
             // Get updated time string for city
             // TBD...Iterate thru all my Hashmap for cities
-            String updatedTime = GetUpdatedTimeString(city);
+            String updatedTime = getUpdatedTimeString(city);
 
             // Display time string
-            DisplayTimeString(city, updatedTime);
+            displayTimeString(city, updatedTime);
         }
     }
-    public String GetCityFromUser()
-    {
+    String oldCity = "San Diego, US";
+    public String getCityFromUser() {
         String city2 = null;
         city2 = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
-        if (city2 == null || city2.isEmpty() || city2.length() == 1)
-        {
-            city2 = "San Diego, US"; // default
+        if (city2 == null || city2.isEmpty() || city2.length() == 1) {
+            city2 = oldCity; // default
         }
         city2 = Utilities.capitalizeWords(city2);
+        //System.out.println();
         return city2;
     }
-    public String GetUpdatedTimeString(String city)
-    {
+    public String getUpdatedTimeString(String city) {
         String updatedTime = null;
-        System.out.println(city);
-        timeZone = clockUtil.getTimeZoneFromCityName(city);
-        if (timeZone != null) {
+        if (timeZone == null || oldCity != city){
+            timeZone = clockUtil.getTimeZoneFromCityName(city);
+            if (timeZone == null){
+                city = oldCity;
+                timeZone = clockUtil.getTimeZoneFromCityName(city);
+                System.out.println("city: "+city);
+            }
+        }
+
+        else {
             Calendar c = Calendar.getInstance(timeZone);
             String militaryTime = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
             String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
@@ -144,13 +150,14 @@ public class WorldClocks implements ActionListener {
 
             int monthIndex = c.get(Calendar.MONTH);
             dateStr = monthNames[monthIndex] + " " + c.get(Calendar.DATE) + ", " + c.get(Calendar.YEAR);
+
         }
-        updatedTime  = dateStr + "\n" + timeStr;
+        updatedTime = dateStr + "\n" + timeStr;
+        oldCity = city;
         return updatedTime;
     }
 
-    public void DisplayTimeString( String city2, String updatedTime)
-    {
+    public void displayTimeString(String city2, String updatedTime) {
         textArea.setText(city2 + "\n" + updatedTime);
         System.out.println(timeStr);
         frame.pack();
