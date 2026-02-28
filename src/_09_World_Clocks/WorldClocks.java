@@ -108,12 +108,14 @@ public class WorldClocks implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == chooseCity) {
             city = getCityFromUser();
-            //System.out.println(city);
-            // TBD...Add city to my HashMap
+            if (city != null){
+                //TBD: change second parameter to getUpdatedTimeString(city)
+                cities.put(city, clockUtil.getTimeZoneFromCityName(city));
+            }
         }
-        if (city != null) {
+        if (cities.isEmpty()) {
             // Get updated time string for city
-            // TBD...Iterate thru all my Hashmap for cities
+            // TBD: change current if statement to iterate thru all my Hashmap for cities, comment out 119
             String updatedTime = getUpdatedTimeString(city);
 
             // Display time string
@@ -122,20 +124,24 @@ public class WorldClocks implements ActionListener {
     }
     String oldCity = "San Diego, US";
     public String getCityFromUser() {
-        String city2 = null;
+        String city2;
         city2 = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
-        if (city2 == null || city2.isEmpty() || city2.length() == 1) {
-            city2 = oldCity; // default
-        }
         city2 = Utilities.capitalizeWords(city2);
-        //System.out.println();
+        TimeZone newCityZone = clockUtil.getTimeZoneFromCityName(city2);
+        if (newCityZone == null || city2.isEmpty() || city2.length() == 1) {
+            city2 = null; // default
+        }
         return city2;
     }
     public String getUpdatedTimeString(String city) {
         String updatedTime = null;
+        //TBD: change instances of oldCity to use isCityDefined
         if (timeZone == null || oldCity != city){
+            //called if the queried timeZone doesn't exist or the city has already been entered
             timeZone = clockUtil.getTimeZoneFromCityName(city);
             if (timeZone == null){
+                //called if user types in an invalid city
+                //defaults program back to previous valid city
                 city = oldCity;
                 timeZone = clockUtil.getTimeZoneFromCityName(city);
                 System.out.println("city: "+city);
@@ -156,9 +162,15 @@ public class WorldClocks implements ActionListener {
         oldCity = city;
         return updatedTime;
     }
-
+    public boolean isCityDefined(String city){
+        boolean isCityDefined = false;
+        //TBD: Iterate through hashmap of cities and find if queried city is already defined
+        return isCityDefined;
+    }
     public void displayTimeString(String city2, String updatedTime) {
-        textArea.setText(city2 + "\n" + updatedTime);
+        //textArea.setText(city2 + "\n" + updatedTime);
+        textArea.setText("");
+        textArea.append(city2 + "\n" + updatedTime);
         System.out.println(timeStr);
         frame.pack();
     }
