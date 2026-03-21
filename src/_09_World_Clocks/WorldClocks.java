@@ -5,6 +5,7 @@ import _08_California_Weather.Utilities;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -38,7 +39,7 @@ public class WorldClocks implements ActionListener {
     Timer timer;
 
     JFrame frame;
-    JPanel buttonPanel;
+    //JPanel buttonPanel;
     JPanel panel = new JPanel();
 //    JTextArea textArea;
     JButton chooseCity;
@@ -58,7 +59,7 @@ public class WorldClocks implements ActionListener {
 
         // Sample starter program
         frame = new JFrame();
-        buttonPanel = new JPanel();
+        //buttonPanel = new JPanel();
 //        textArea = new JTextArea();
         chooseCity = new JButton();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,8 +68,8 @@ public class WorldClocks implements ActionListener {
         frame.add(panel);
         chooseCity.setText("Add city");
         chooseCity.addActionListener(this);
-        buttonPanel.add(chooseCity);
-        frame.add(buttonPanel);
+        //buttonPanel.add(chooseCity);
+        frame.add(chooseCity);
         frame.pack();
         frame.setVisible(true);
         // This Timer object is set to call the actionPerformed() method every
@@ -77,31 +78,6 @@ public class WorldClocks implements ActionListener {
         timer.start();
     }
 
-    //@Override
-//    public void gavin_actionPerformed(ActionEvent arg0) {
-//        if (arg0.getSource() == chooseCity) {
-//            city = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
-//            city = Utilities.capitalizeWords(city);
-//            timeZone = clockUtil.getTimeZoneFromCityName(city);
-//        }
-//        if (timeZone == null) {
-//            timeZone = clockUtil.getTimeZoneFromCityName("San Diego, US");
-//        }
-//        if (city == null) {
-//            city = "San Diego, US";
-//        }
-//        Calendar c = Calendar.getInstance(timeZone);
-//        String militaryTime = c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
-//        String twelveHourTime = " [" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND) + "]";
-//        timeStr = militaryTime + twelveHourTime;
-//        int monthIndex = c.get(Calendar.MONTH);
-//        String date = monthNames[monthIndex] + " " + c.get(Calendar.DATE) + ", " + c.get(Calendar.YEAR);
-//
-//        dateStr = date;
-//        textArea.setText(city + "\n" + dateStr + "\n" + timeStr);
-//        System.out.println(timeStr);
-//        frame.pack();
-//    }
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (arg0.getSource() == chooseCity) {
@@ -113,15 +89,15 @@ public class WorldClocks implements ActionListener {
                 frame.pack();
             }
             else{
-                System.out.println("city dont exist");
+                System.out.println("city doesn't exist");
             }
         }
+        int i=0;
         for (String cityInKeyset : citiesAndTimeZones.keySet()) {
-            // Get updated time string for city
-            // TBD: change current if statement to iterate thru all my Hashmap for cities, comment out 119
-
             String updatedTime = getUpdatedTimeString(cityInKeyset);
-
+            textAreas.get(i).setText(cityInKeyset + "\n" + updatedTime);
+            i++;
+            frame.pack();
         }
     }
     //String oldCity = "San Diego, US";
@@ -131,12 +107,15 @@ public class WorldClocks implements ActionListener {
         city2 = Utilities.capitalizeWords(city2);
         TimeZone newCityZone = clockUtil.getTimeZoneFromCityName(city2);
         if (newCityZone == null || city2.isEmpty() || city2.length() == 1) {
-            city2 = null; // default
+            city2 = null;
+            JOptionPane.showMessageDialog(null, "City doesn't exist.");// default
         }
 
-        if (isCityDefined(city2)){
+        if (isCityDefined(city2)) {
             //called if the queried timeZone doesn't exist or the city has already been entered
-            JOptionPane.showMessageDialog(null, "City is already defined or doesn't exist.");
+            city2 = null;
+            JOptionPane.showMessageDialog(null, "City is already defined.");
+            //System.out.println("city is defined");
         }
         return city2;
     }
@@ -169,18 +148,20 @@ public class WorldClocks implements ActionListener {
         for (String cityInHash : citiesAndTimeZones.keySet()){
             if (cityInHash == city) {
                 isCityDefined = true;
+                System.out.println("citydefined");
                 break;
             }
         }
         return isCityDefined;
     }
+    ArrayList<JTextArea> textAreas = new ArrayList<JTextArea>();
     public void addNewCityClock(String city2, String updatedTime) {
-        JTextArea textArea = new JTextArea();
-        textArea.setText(city2 + "\n" + updatedTime);
-        panel.add(textArea);
+        JTextArea newCity = new JTextArea();
+        newCity.setText(city2 + "\n" + updatedTime);
+        textAreas.add(newCity);
+        panel.add(newCity);
         frame.add(panel);
-        //System.out.println(timeStr);
-        //frame.pack();
+        frame.pack();
     }
 
 }
