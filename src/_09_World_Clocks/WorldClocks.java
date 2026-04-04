@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
-//Auckland, Tokyo, Dhaka, Moscow, London, Rio de Janeiro, NYC, LA, Honolulu
 
 /*
  * Your task is to create a java program that:
@@ -39,10 +38,10 @@ public class WorldClocks implements ActionListener {
     ClockUtilities clockUtil;
     Timer timer;
 
+    ArrayList<JTextArea> textAreas = new ArrayList<JTextArea>();
     JFrame frame;
     JPanel panel = new JPanel();
     JButton chooseCity;
-
 
     String city;
     String dateStr;
@@ -55,8 +54,6 @@ public class WorldClocks implements ActionListener {
         clockUtil = new ClockUtilities();
 
         // The format for the city must be: city, country (all caps)
-
-        // Sample starter program
         frame = new JFrame();
         chooseCity = new JButton();
         frame.setLayout(new BorderLayout());
@@ -78,17 +75,15 @@ public class WorldClocks implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        if (arg0.getSource() == chooseCity) {
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == chooseCity) {
             city = getCityFromUser();
-            if (city != null){
-                citiesAndTimeZones.put(city, clockUtil.getTimeZoneFromCityName(city));
-                // Display time string
-                addNewCityClock(city, getUpdatedTimeString(city));
-                frame.pack();
-            }
+            citiesAndTimeZones.put(city, clockUtil.getTimeZoneFromCityName(city));
+            // Display time string
+            addNewCityClock(city, getUpdatedTimeString(city));
+            frame.pack();
         }
-        int i=0;
+        int i = 0;
         for (String cityInKeyset : citiesAndTimeZones.keySet()) {
             String updatedTime = getUpdatedTimeString(cityInKeyset);
             textAreas.get(i).setText(cityInKeyset + "\n" + updatedTime);
@@ -98,20 +93,22 @@ public class WorldClocks implements ActionListener {
     }
 
     public String getCityFromUser() {
-        String city2;
-        city2 = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
-        city2 = Utilities.capitalizeWords(city2);
-        TimeZone newCityZone = clockUtil.getTimeZoneFromCityName(city2);
-        if (newCityZone == null || city2.isEmpty() || city2.length() == 1) {
-            city2 = null;
+        String cityTBA = "";
+        while (cityTBA.isBlank()) {
+            cityTBA = JOptionPane.showInputDialog(null, "What city would you like to add? \n (Format it like 'City, TWO LETTER Country Code'");
+        }
+        cityTBA = Utilities.capitalizeWords(cityTBA);
+        TimeZone newCityZone = clockUtil.getTimeZoneFromCityName(cityTBA);
+        if (newCityZone == null || cityTBA.isEmpty() || cityTBA.length() == 1) {
+            cityTBA = null;
         }
 
-        if (isCityDefined(city2)) {
+        if (isCityAdded(cityTBA)) {
             //called if the queried timeZone doesn't exist or the city has already been entered
-            city2 = null;
-            JOptionPane.showMessageDialog(null, "City is already defined.");
+            cityTBA = null;
+            JOptionPane.showMessageDialog(null, "City is already added.");
         }
-        return city2;
+        return cityTBA;
     }
 
     public String getUpdatedTimeString(String city) {
@@ -126,11 +123,10 @@ public class WorldClocks implements ActionListener {
         return updatedTime;
     }
 
-    public boolean isCityDefined(String city){
+    public boolean isCityAdded(String city) {
         return citiesAndTimeZones.containsKey(city);
     }
 
-    ArrayList<JTextArea> textAreas = new ArrayList<JTextArea>();
     public void addNewCityClock(String city2, String updatedTime) {
         JTextArea newCity = new JTextArea();
         newCity.setText(city2 + "\n" + updatedTime);
